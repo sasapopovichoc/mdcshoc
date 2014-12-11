@@ -1,0 +1,16 @@
+﻿This is help for HourOfCodeMessenger.
+
+If you want to send message - just type it and press enter.
+	Example: hello!
+
+If you want to send message to user John123 do it like this: type username, then semicolon two times, then message you want to send.
+	Example: John123,, Hi John!
+
+Available commands:
+_login
+_logout
+_adduser
+_about
+_help
+/?
+-?
