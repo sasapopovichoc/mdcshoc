@@ -97,7 +97,8 @@ namespace HOCMessengerClient
 				Console.WriteLine(helpContent);
 			}
 
-			// Put in eventLog table info that user asked for help.
+			// Put in eventLog table info that user with username e.g. 'John123' asked for help.
+			// If username is unknown (null) put "?"
 			//
 			// TODO: Missing implementation.
 		}
@@ -108,7 +109,8 @@ namespace HOCMessengerClient
 			//
 			// TODO: Missing implementation.
 
-			// Put in eventLog table info that user executed About command.
+			// Put in eventLog table info that user with username e.g. 'John123' executed About command.
+			// If username is unknown (null) put "?"
 			//
 			// TODO: Missing implementation.
 		}
@@ -118,20 +120,18 @@ namespace HOCMessengerClient
 			string toUsername = null;
 			int? toUserId = null;
 
+			// Insert message into eventLog table.
+			//
+			// TODO: Missing implementation.
+
 			ExtractToUserFromMessage(ref message, out toUsername, out toUserId);
 
-			// Send message by inserting row into messenger database.
-			// Row should contain current UTC time, fromUserid, toUserId and message text
-			//
-			// Implementation below always sets columns fromUserid, toUserId to be null.
-			// This should be fixed.
-			//
 			using (SqlConnection openCon = new SqlConnection(connectionString))
 			{
 				string insertMessageQuery = String.Format(
 					"INSERT INTO messages VALUES ({0}, {1}, '{2}', getutcdate())",
-					"null", // This should not always be null. TODO: Missing implementation.
-					"null", // This should not always be null. TODO: Missing implementation.
+					userid == null ? "null" : userid.ToString(),
+					toUserId == null ? "null" : toUserId.ToString(),
 					message);
 
 				using (SqlCommand insertMessageCommand = new SqlCommand(insertMessageQuery))
