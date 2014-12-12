@@ -1,0 +1,103 @@
+Code snippets:
+
+// SQL
+//
+insert into messages values (getutcdate(), 'hello world', 123)
+
+// C#
+//
+string messageText = "hello world";
+int messageId = 123;
+using (SqlConnection conn = new SqlConnection(connectionString))
+{
+	conn.Open();
+	using (SqlCommand command = new SqlCommand())
+	{
+		command.Connection = conn;
+		command.CommandText = String.Format("INSERT INTO messages values(getutcdate(), '{0}', {1})", messageText, messageId);
+		
+		// this will execute query against the server
+		//
+		command.ExecuteNonQuery();
+	}
+}
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+// SQL
+//
+select id from messages where message = 'Hello world'
+
+// C#
+//
+int? uid = null;
+string messagetext = 'Hello world';
+
+using (SqlConnection conn = new SqlConnection(connectionString))
+{
+	conn.Open();
+	using (SqlCommand command = new SqlCommand())
+	{
+		command.Connection = conn;
+		command.CommandText = String.Format("select id from messages where message = '{0}'", messagetext);
+		try
+		{
+			// Result is scalar (one value). 
+			// This will get result from the server. Type will be string.
+			//
+			string result = command.ExecuteScalar().ToString();
+			
+			// Convert string to int.
+			//
+			uid = Int32.Parse(result);
+		}
+		catch (NullReferenceException exception)
+		{
+			Console.WriteLine("Error: " + exception.Message);
+		}
+	}
+}
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+// SQL
+// 
+select name, lastname, age from people where id = 123
+
+// C#
+//
+int id = 123;
+
+using (SqlConnection conn = new SqlConnection(connectionString))
+{
+	conn.Open();
+	using (SqlCommand command = new SqlCommand())
+	{
+		command.Connection = conn;
+		command.CommandText = String.Format("select name, lastname, age from people where id = {0}", id);
+		using (SqlDataReader reader = command.ExecuteReader())
+		{
+			// reader.Read() will read one row from the result-set and return true.
+			// If there are no more rows, function Read will return false.
+			//
+			if (reader.Read())
+			{
+				// Following commands are getting 1st, 2nd and 3rd column from the result row.
+				// Note that you have to match the data type.
+				//
+				string name = reader.String(0);
+				string last = reader.String(1);
+				int id = reader.GetInt32(2);
+				
+				// Do something with values extracted from reader...
+			}
+			else
+			{
+				Console.WriteLine("Error. Person with this id does not exist.");
+			}
+		}
+	}
+}
+
+
+
