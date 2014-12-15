@@ -65,19 +65,20 @@ WHERE
 		{
 			// Method should extract username which sent this message from reader (row of the table).
 			// If username is null, show "U?".
-			string x = reader.GetString(2);
-			if (x!=null) return x;
-			else return "U?";
+			//
+			// TODO: Actual implementation missing here.
+
+			return "-";
 		}
 
 		protected string GetMessageTime(SqlDataReader reader)
 		{
 			// Method should extract message time from reader (row of the table).
 			// If time is null, show "T?".
-			
-			String temp = reader.GetString(1);
-			if (temp != null) return temp;
-			else return "T?";
+			//
+			// TODO: Actual implementation missing here.
+
+			return "-";
 		}
 	}
 }
