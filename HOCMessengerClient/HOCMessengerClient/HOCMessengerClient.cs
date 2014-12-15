@@ -107,12 +107,13 @@ namespace HOCMessengerClient
 		{
 			// Show text from file About.txt
 			//
-			// TODO: Missing implementation.
-
+            using(TextReader About = new StreamReader("About.txt")){
+            Console.WriteLine(About.ReadToEnd());
+            }
 			// Put in eventLog table info that user with username e.g. 'John123' executed About command.
 			// If username is unknown (null) put "?"
 			//
-			// TODO: Missing implementation.
+            Log("User" + username!=null?username:null + "executed About command");
 		}
 
 		private void SendMessage(string message)
@@ -143,6 +144,23 @@ namespace HOCMessengerClient
 				}
 			}
 		}
+
+        private void Log(string message)
+        {
+            using (SqlConnection openCon = new SqlConnection(connectionString))
+            {
+                string insertMessageQuery = String.Format(
+                    "INSERT INTO eventLog(eventTime, eventDescription) VALUES (getutcdate(), '{0}')", message);
+
+                using (SqlCommand insertMessageCommand = new SqlCommand(insertMessageQuery))
+                {
+                    insertMessageCommand.Connection = openCon;
+                    openCon.Open();
+
+                    insertMessageCommand.ExecuteNonQuery();
+                }
+            }
+        }
 
 		private void ExtractToUserFromMessage(ref string message, out string toUsername, out int? toUserId)
 		{
